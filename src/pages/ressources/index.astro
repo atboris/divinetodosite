@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getAllResources } from '../../lib/content'
+
+const resources = await getAllResources()
+const categories = [...new Set(resources.map((r) => r.category))]
+---
+<BaseLayout title="Ressources — Divine Todo" description="Documents, guides et supports pour nourrir votre vie spirituelle.">
+  <header class="top">
+    <div class="container">
+      <a class="brand" href="/"><span class="brand-mark">✦</span>Divine <b>Todo</b></a>
+      <a class="return" href="/#ressources">← Retour à l'accueil</a>
+    </div>
+  </header>
+  <main class="page">
+    <div class="container">
+      <header class="heading">
+        <p class="eyebrow">Bibliothèque Divine Todo</p>
+        <h1>Explorer les ressources.</h1>
+        <p>Des supports pour nourrir la prière, approfondir sa foi et préparer la vie de l'Église.</p>
+      </header>
+      <div class="library">
+        <aside class="filters">
+          <b>PAR CATÉGORIE</b>
+          <a href="#" class="active">Toutes les ressources</a>
+          {categories.map((c) => <a href="#">{c}</a>)}
+        </aside>
+        <div class="items">
+          {resources.length === 0 ? (
+            <p style="color:var(--muted)">Aucune ressource pour l'instant.</p>
+          ) : resources.map((r) => (
+            <article class="item">
+              <span class="file-type">{r.file_type}</span>
+              <div><h2>{r.title}</h2><p>{r.description}</p></div>
+              <a class="button button-outline" href={`/ressources/${r.slug}`}>Consulter →</a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

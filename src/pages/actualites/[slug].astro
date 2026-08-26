@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  getPublicationBySlug,
+  renderMarkdown,
+  formatDate,
+} from "../../lib/content";
+import { supabase } from "../../lib/supabase";
+
+export async function getStaticPaths() {
+  const { data } = await supabase
+    .from("publications")
+    .select("slug")
+    .eq("type", "actualite")
+    .eq("is_published", true);
+  return (data ?? []).map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const pub = await getPublicationBySlug(slug!);
+if (!pub) return Astro.redirect("/actualites");
+---
+
+<BaseLayout
+  title={`${pub.title} — Divine Todo`}
+  description={pub.excerpt}
+  ogImage={pub.image_url ?? undefined}
+>
+  <header class="top">
+    <div class="container">
+      <a class="brand" href="/"
+        ><span class="brand-mark">✦</span>Divine <b>Todo</b></a
+      >
+      <a class="return" href="/actualites">← Toutes les actualités</a>
+    </div>
+  </header>
+  <main class="page">
+    <div class="container">
+      <header class="heading">
+        <p class="eyebrow">{pub.category}</p>
+        <p class="meta">{formatDate(pub.published_at)} · ACTUALITÉ</p>
+        <h1>{pub.title}</h1>
+        <p>{pub.excerpt}</p>
+      </header>
+      <article class="article">
+        {
+          pub.image_url && (
+            <div
+              class="cover"
+              style={`background-image:url('${pub.image_url}')`}
+            />
+          )
+        }
+        {
+          pub.attachment_url && (
+            <a
+              href={pub.attachment_url}
+              target="_blank"
+              rel="noopener"
+              class="button-primary"
+              style="margin-bottom:28px;display:inline-flex"
+            >
+              {pub.attachment_label ?? "Télécharger le document"} →
+            </a>
+          )
+        }
+        <div class="copy" set:html={renderMarkdown(pub.content)} />
+      </article>
+    </div>
+  </main>
+</BaseLayout>

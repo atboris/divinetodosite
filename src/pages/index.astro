@@ -1,0 +1,657 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getPrimaryAppLink, isAppReady, APP_WEB_URL } from "../lib/appLinks";
+const appLink = getPrimaryAppLink();
+// import.meta.env.PUBLIC_APP_WEB_URL;
+import {
+  getHomeData,
+  formatDate,
+  getLiturgicalToday,
+  getResources,
+  getFeatured,
+  getTestimonials,
+} from "../lib/content";
+import { getMockupData } from '../lib/content'
+const { liturgicalDay: mockupLiturgy, mystery, verse } = getMockupData()
+
+const { slides, publications, news } = await getHomeData();
+
+const { day: liturgicalDay, readings } = getLiturgicalToday();
+const resources = await getResources();
+const featured = await getFeatured();
+const testimonials = await getTestimonials();
+
+const features = [
+  [
+    "📖",
+    "Approfondir sa foi",
+    "Des contenus pour mieux comprendre et nourrir votre foi.",
+  ],
+  [
+    "🙏",
+    "Structurer sa vie spirituelle",
+    "Des repères doux pour donner une place à l'essentiel.",
+  ],
+  [
+    "📚",
+    "Découvrir les ressources",
+    "Documents, prières et repères de l'Église.",
+  ],
+  ["🔔", "Ne rien oublier", "Des rappels bienveillants pour rester connecté."],
+  [
+    "♡",
+    "Grandir chaque jour",
+    "Une routine spirituelle qui se construit pas à pas.",
+  ],
+];
+const steps = [
+  [
+    "Créez votre espace",
+    "Commencez votre expérience Divine Todo en quelques instants.",
+  ],
+  [
+    "Découvrez votre espace spirituel",
+    "Accédez aux contenus et aux fonctionnalités qui vous accompagnent.",
+  ],
+  [
+    "Organisez votre quotidien",
+    "Créez des habitudes et des rappels adaptés à votre vie.",
+  ],
+  [
+    "Grandissez chaque jour",
+    "Construisez une vie spirituelle plus régulière, à votre rythme.",
+  ],
+];
+---
+
+<BaseLayout
+  title="Divine Todo — Grandir dans la foi"
+  description="Divine Todo, votre compagnon numérique pour grandir dans la foi au quotidien."
+>
+  <header class="site-header" id="header">
+    <nav class="container nav" aria-label="Navigation principale">
+      <a class="brand" href="#accueil"
+        ><span class="brand-mark">✦</span><span>Divine <b>Todo</b></span></a
+      >
+      <button
+        class="menu-toggle"
+        aria-expanded="false"
+        aria-controls="nav-links"
+        aria-label="Ouvrir le menu"><span></span><span></span></button
+      >
+      <div class="nav-panel" id="nav-links">
+        <a href="#decouvrir">Découvrir</a><a href="#eglise">Aujourd'hui</a><a
+          href="#parole">Parole</a
+        ><a href="#ressources">Ressources</a><a href="#actualites">Actualités</a
+        ><a href="#fonctionnement">Comment ça marche</a><a href="#contact">Contact</a>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-toggle" aria-label="Changer de thème">◐</button>
+        {
+          isAppReady ? (
+            <a
+              class="button button-small"
+              href={appLink}
+              target={APP_WEB_URL ? "_blank" : undefined}
+              rel="noopener"
+            >
+              Accéder à Divine Todo <span>↗</span>
+            </a>
+          ) : (
+            <a class="button button-small button-disabled" href="#application">
+              Bientôt disponible <span>✦</span>
+            </a>
+          )
+        }
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="accueil" aria-label="Présentation Divine Todo">
+      <div
+        class="hero-slides"
+        id="hero-slides"
+        data-slides={JSON.stringify(slides)}
+      >
+        {
+          slides.map((slide, i) => (
+            <div
+              class:list={["hero-slide", { active: i === 0 }]}
+              style={`background-image:url('${slide.image_url}')`}
+            />
+          ))
+        }
+      </div>
+      <div class="hero-shade"></div>
+      <div class="container hero-content">
+        <p class="kicker">Vivre sa foi, simplement</p>
+        <h1 id="hero-title">{slides[0]?.title}</h1>
+        <p class="hero-copy" id="hero-description">{slides[0]?.description}</p>
+        <div class="hero-actions">
+          <a
+            id="hero-cta"
+            class="button button-light"
+            href={slides[0]?.cta_link ?? "#decouvrir"}
+            >{slides[0]?.cta_label ?? "Découvrir Divine Todo"} <span>→</span></a
+          >
+          <a class="text-link light" href="#eglise"
+            >Explorer aujourd'hui <span>↓</span></a
+          >
+        </div>
+      </div>
+      <div class="hero-bottom container">
+        <div class="slider-controls">
+          <button id="previous-slide" aria-label="Slide précédente">←</button
+          ><div id="slide-dots" class="slide-dots">
+            {
+              slides.map((_, i) => (
+                <button
+                  class:list={{ active: i === 0 }}
+                  aria-label={`Afficher la slide ${i + 1}`}
+                />
+              ))
+            }
+          </div><button id="next-slide" aria-label="Slide suivante">→</button>
+        </div>
+        <p>Un compagnon attentif, à votre rythme.</p>
+      </div>
+    </section>
+
+    <section id="decouvrir" class="section intro">
+      <div class="container">
+        <div class="section-heading centered reveal">
+          <p class="eyebrow">L'essentiel, chaque jour</p>
+          <h2>Une nouvelle manière de vivre<br />votre foi au quotidien.</h2>
+          <p>
+            Divine Todo réunit l'inspiration, les ressources et les repères qui
+            vous aident à avancer avec paix et intention.
+          </p>
+        </div>
+        <div class="feature-grid">
+          {
+            features.map(([icon, title, text]) => (
+              <article class="feature reveal">
+                <>
+                  <div class="feature-icon">{icon}</div>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="eglise" class="section section-tint">
+      <div class="container">
+        <div class="section-heading">
+          <p class="eyebrow">{formatDate(new Date().toISOString())}</p>
+          <h2>Aujourd'hui dans l'Église</h2>
+          <p>
+            Un point de rencontre quotidien avec la liturgie et la vie de
+            l'Église.
+          </p>
+        </div>
+        {
+          liturgicalDay && (
+            <div class="today-layout reveal">
+              <article
+                class="daily-card"
+                data-color={liturgicalDay.color ?? ""}
+              >
+                <div class="daily-top">
+                  <>
+                    <span class="pill">{liturgicalDay.rank}</span>
+                    <span>✦</span>
+                  </>
+                </div>
+                <p class="daily-date">{formatDate(new Date().toISOString())}</p>
+                <h3>
+                  {liturgicalDay.title ?? liturgicalDay.season ?? "Férie"}
+                </h3>
+                {readings.find((r) => r.reading_type === "evangile")
+                  ?.resolved_text && (
+                  <p class="daily-excerpt">
+                    {" "}
+                    {readings
+                      .find((r) => r.reading_type === "evangile")!
+                      .resolved_text!.slice(0, 180)}
+                    …
+                  </p>
+                )}
+                <a href="/parole" class="text-link">
+                  Lire la méditation <span>→</span>
+                </a>
+              </article>
+
+              <div class="today-side">
+                <article>
+                  <span class="icon-orb">☼</span>
+                  <div style="width:100%">
+                    <p class="mini-label">
+                      {liturgicalDay.season ?? "Temps Ordinaire"}
+                    </p>
+                    <h3>Lectures du jour</h3>
+                    <div style="margin-top:10px">
+                      {readings.map((r) => (
+                        <div class="reading-list-item">
+                          <b>{r.label}</b>
+                          <span>{r.citation}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </article>
+
+                {readings.some((r) => r.resolved_text) && (
+                  <article
+                    class="reading-reader"
+                    data-readings={JSON.stringify(
+                      readings.filter((r) => r.resolved_text),
+                    )}
+                  >
+                    <div class="reading-nav">
+                      <button id="reader-prev" aria-label="Lecture précédente">
+                        ←
+                      </button>
+                      <button id="reader-next" aria-label="Lecture suivante">
+                        →
+                      </button>
+                    </div>
+                    <div class="reading-reader-heading">
+                      <p class="mini-label" id="reader-label">
+                        Texte du jour
+                      </p>
+                      <p class="reading-citation" id="reader-citation" />
+                    </div>
+                    <div class="reading-text-wrap">
+                      <p class="reading-text" id="reader-text" />
+                      <div class="reading-fade" aria-hidden="true" />
+                    </div>
+                  </article>
+                )}
+              </div>
+            </div>
+          )
+        }
+      </div>
+    </section>
+
+    <script>
+      const container = document.querySelector(".reading-reader");
+      if (container) {
+        const readings = JSON.parse(
+          container.getAttribute("data-readings") || "[]",
+        );
+        let current = 0;
+        const label = document.getElementById("reader-label");
+        const citation = document.getElementById("reader-citation");
+        const text = document.getElementById("reader-text");
+        const prevBtn = document.getElementById(
+          "reader-prev",
+        ) as HTMLButtonElement | null;
+        const nextBtn = document.getElementById(
+          "reader-next",
+        ) as HTMLButtonElement | null;
+
+        function show(index: number) {
+          current = index;
+          const r = readings[current];
+          if (label) label.textContent = r.label;
+          if (citation) citation.textContent = r.citation;
+          if (text) text.textContent = r.resolved_text;
+          if (prevBtn) prevBtn.disabled = current === 0;
+          if (nextBtn) nextBtn.disabled = current === readings.length - 1;
+        }
+
+        prevBtn?.addEventListener(
+          "click",
+          () => current > 0 && show(current - 1),
+        );
+        nextBtn?.addEventListener(
+          "click",
+          () => current < readings.length - 1 && show(current + 1),
+        );
+
+        show(0);
+      }
+    </script>
+
+    <section id="parole" class="section">
+      <div class="container">
+        <div class="section-heading split">
+          <div>
+            <p class="eyebrow">Parole & Édification</p><h2>
+              Nourrissez votre foi.
+            </h2>
+          </div>
+          <a class="text-link" href="/parole"
+            >Voir toutes les publications <span>→</span></a
+          >
+        </div>
+        <div class="publication-grid">
+          {
+            publications.map((p) => (
+              <article class="publication reveal">
+                <div
+                  class="pub-image"
+                  style={
+                    p.image_url ? `background-image:url('${p.image_url}')` : ""
+                  }
+                >
+                  <span>{p.category}</span>
+                </div>
+                <div class="publication-body">
+                  <p class="post-meta">
+                    {p.category} · {formatDate(p.published_at)}
+                  </p>
+                  <h3>{p.title}</h3>
+                  <p>{p.excerpt}</p>
+                  <a href={`/parole/${p.slug}`} class="text-link">
+                    Lire <span>→</span>
+                  </a>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section id="actualites" class="section">
+      <div class="container">
+        <div class="section-heading split">
+          <div>
+            <p class="eyebrow">Actualités</p><h2>Les dernières nouvelles.</h2>
+          </div>
+          <a class="text-link" href="/actualites"
+            >Toutes les actualités <span>→</span></a
+          >
+        </div>
+        <div class="compact-news">
+          {
+            news.map((n) => (
+              <article class="reveal">
+                <p class="post-meta">
+                  {n.category} · {formatDate(n.published_at)}
+                </p>
+                <h3>
+                  <a href={`/actualites/${n.slug}`}>{n.title}</a>
+                </h3>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    {
+      featured && (
+        <section id="une" class="section spotlight">
+          <div class="container">
+            <p class="eyebrow">À la une</p>
+            <div class="spotlight-layout reveal">
+              <div>
+                <p class="spotlight-label">{featured.category.toUpperCase()}</p>
+                <h2>{featured.title}</h2>
+                <p>{featured.excerpt}</p>
+                <a
+                  class="button button-light"
+                  href={`/parole/${featured.slug}`}
+                >
+                  Découvrir <span>→</span>
+                </a>
+              </div>
+              <div class="quote-card">
+                <span class="quote-mark">"</span>
+                <p>{featured.excerpt.slice(0, 100)}</p>
+                <span>— {featured.author ?? "Divine Todo"}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <section id="application" class="section app-section">
+      <div class="container app-layout">
+        <div class="app-copy reveal">
+          <p class="eyebrow">Votre espace personnel</p>
+          <h2>Votre vie spirituelle, simplement.</h2>
+          <p>
+            Retrouvez vos habitudes, vos intentions, les contenus qui vous
+            nourrissent et les rendez-vous qui comptent — au même endroit.
+          </p>
+          <div class="app-actions">
+            {
+              isAppReady ? (
+                <a
+                  class="button"
+                  href={appLink}
+                  target={APP_WEB_URL ? "_blank" : undefined}
+                  rel="noopener"
+                >
+                  Accéder à Divine Todo <span>→</span>
+                </a>
+              ) : (
+                <a class="button button-disabled" href="#contact">
+                  Bientôt disponible <span>✦</span>
+                </a>
+              )
+            }
+            <a class="button button-outline" href="#decouvrir"
+              >Découvrir l'application</a
+            >
+          </div>
+          <div class="app-points">
+            <span>✓ Une journée à la fois</span><span
+              >✓ Des rappels bienveillants</span
+            >
+          </div>
+        </div>
+        <div class="phone-wrap reveal">
+          <div class="halo"></div>
+                    <div class="phone">
+            <div class="phone-top"><span>9:41</span><span>•••</span></div>
+            <p class="phone-greeting">Bonjour ✦</p>
+            <h3>Votre journée</h3>
+
+            <div class="phone-prayer" data-color={mockupLiturgy?.color ?? ''}>
+              <span>✦</span>
+              <div>
+                <small>VERSET DU JOUR</small>
+                <b>{verse ? `${verse.book_name} ${verse.chapter}:${verse.verse}` : 'Chargement...'}</b>
+              </div>
+            </div>
+
+            <div class="phone-list">
+              <p>Aujourd'hui</p>
+              <span><i>✦</i> {mockupLiturgy?.title ?? mockupLiturgy?.season ?? 'Férie'}</span>
+              <span><i>✦</i> {mystery.label}</span>
+              <span><i>○</i> Lectio Divina du jour</span>
+            </div>
+
+            <div class="phone-nav"><span>⌂</span><span class="active">✦</span><span>◯</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="temoignages" class="section section-tint">
+      <div class="container">
+        <div class="section-heading centered">
+          <p class="eyebrow">La parole vous appartient</p>
+          <h2>Ils avancent avec Divine Todo.</h2>
+          <p>
+            Les témoignages seront publiés ici après validation de leurs
+            auteurs.
+          </p>
+        </div>
+        <div class="testimonials">
+          {
+            testimonials.length > 0 ? (
+              testimonials.map((t) => (
+                <article class="testimonial-placeholder reveal">
+                  <div class="avatar">{t.author_name[0]}</div>
+                  <p>{t.content}</p>
+                  <small>
+                    {t.author_name}
+                    {t.author_role ? ` · ${t.author_role}` : ""}
+                  </small>
+                </article>
+              ))
+            ) : (
+              <>
+                <article class="testimonial-placeholder">
+                  <>
+                    <div class="avatar">?</div>
+                    <p>
+                      Votre expérience peut encourager quelqu'un aujourd'hui.
+                    </p>
+                    <small>Témoignage à venir</small>
+                  </>
+                </article>
+                <article class="testimonial-placeholder">
+                  <>
+                    <div class="avatar">?</div>
+                    <p>
+                      Partagez les petites habitudes qui ont transformé votre
+                      quotidien.
+                    </p>
+                    <small>Témoignage à venir</small>
+                  </>
+                </article>
+                <article class="testimonial-placeholder">
+                  <>
+                    <div class="avatar">?</div>
+                    <p>
+                      Une communauté avance aussi grâce aux récits qu'elle se
+                      transmet.
+                    </p>
+                    <small>Témoignage à venir</small>
+                  </>
+                </article>
+              </>
+            )
+          }
+        </div>
+      </div>
+    </section>
+
+    {
+      resources.length > 0 && (
+        <section id="ressources" class="section">
+          <div class="container">
+            <div class="section-heading split">
+              <div>
+                <>
+                  <p class="eyebrow">Bibliothèque</p>
+                  <h2>
+                    Les ressources dont
+                    <br />
+                    vous avez besoin.
+                  </h2>
+                </>
+              </div>
+              <p>
+                Des documents de référence pour prier, comprendre et
+                transmettre.
+              </p>
+            </div>
+            <div class="resource-list">
+              {resources.map((r) => (
+                <article class="resource reveal">
+                  <span class="file-type">{r.file_type}</span>
+                  <div>
+                    <h3>{r.title}</h3>
+                    <p>{r.category}</p>
+                  </div>
+                  <small>{r.file_size_label ?? ""}</small>
+                  <a href={`/ressources/${r.slug}`}>Consulter →</a>
+                </article>
+              ))}
+            </div>
+            <a class="button button-outline resources-cta" href="/ressources">
+              Explorer toutes les ressources <span>→</span>
+            </a>
+          </div>
+        </section>
+      )
+    }
+
+    <section id="fonctionnement" class="section">
+      <div class="container">
+        <div class="section-heading centered">
+          <p class="eyebrow">Simple par nature</p><h2>Comment ça marche ?</h2>
+          <p>
+            Votre espace spirituel se construit avec vous, un jour après
+            l'autre.
+          </p>
+        </div>
+        <ol class="steps">
+          {
+            steps.map(([title, text]) => (
+              <li class="reveal">
+                <>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <section id="contact" class="final-cta">
+      <div class="container reveal">
+        <p class="eyebrow light">Une invitation pour aujourd'hui</p>
+        <h2>Et si votre vie spirituelle<br />commençait aujourd'hui ?</h2>
+        <p>
+          Découvrez Divine Todo et faites de chaque journée une nouvelle
+          occasion de grandir dans votre foi.
+        </p>
+               {isAppReady ? (
+          <a class="button button-light" href={appLink} target={APP_WEB_URL ? '_blank' : undefined} rel="noopener">Commencer avec Divine Todo <span>→</span></a>
+        ) : (
+          <a class="button button-light button-disabled" href="#contact">Être prévenu du lancement <span>✦</span></a>
+        )}
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <a class="brand" href="#accueil"
+          ><span class="brand-mark">✦</span><span>Divine <b>Todo</b></span></a
+        ><p>Grandir dans la foi, un jour à la fois.</p>
+      </div>
+      <div>
+        <h3>Divine Todo</h3><a href="#decouvrir">À propos</a><a
+          href="#decouvrir">Fonctionnalités</a
+        >{isAppReady ? (
+          <a class="" href={appLink} target={APP_WEB_URL ? '_blank' : undefined} rel="noopener">Accéder à Divine Todo <span>↗</span></a>
+        ) : (
+          <a class=" button-disabled" href="#application">Bientôt disponible <span>✦</span></a>
+        )}
+      </div>
+      <div>
+        <h3>Ressources</h3><a href="#parole">Publications</a><a
+          href="#ressources">Documents</a
+        >
+      </div>
+      <div>
+        <h3>Informations</h3><a href="#contact">Contact</a><a
+          href="/confidentialite">Politique de confidentialité</a
+        >
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <a href="https://web.facebook.com/softarts05" target="_blank"><span>© 2026  SoftArts Divine Todo. Tous droits réservés.</span></a><span
+        >Fait avec intention ✦</span>
+    </div>
+  </footer>
+</BaseLayout>

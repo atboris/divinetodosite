@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getAllPublications, formatDate } from '../../lib/content'
+
+const news = await getAllPublications('actualite')
+---
+<BaseLayout title="Actualités — Divine Todo" description="Les dernières nouvelles de la vie de l'Église.">
+  <header class="top">
+    <div class="container">
+      <a class="brand" href="/"><span class="brand-mark">✦</span>Divine <b>Todo</b></a>
+      <a class="return" href="/#actualites">← Retour à l'accueil</a>
+    </div>
+  </header>
+  <main class="page">
+    <div class="container">
+      <header class="heading">
+        <p class="eyebrow">Vie de l'Église</p>
+        <h1>Toutes les actualités.</h1>
+        <p>Suivez les nouvelles, les rendez-vous et les initiatives de la communauté.</p>
+      </header>
+      <div class="items article">
+        {news.length === 0 ? (
+          <p style="text-align:center;color:var(--muted)">Aucune actualité pour l'instant.</p>
+        ) : news.map((n) => (
+          <article class="item">
+            <span class="file-type">{new Date(n.published_at).getDate()}</span>
+            <div><h2>{n.title}</h2><p>{n.category} · {formatDate(n.published_at)}</p></div>
+            <a class="button button-outline" href={`/actualites/${n.slug}`}>Lire →</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </main>
+</BaseLayout>

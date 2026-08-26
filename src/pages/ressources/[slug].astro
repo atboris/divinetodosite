@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getResourceBySlug } from '../../lib/content'
+import { supabase } from '../../lib/supabase'
+
+export async function getStaticPaths() {
+  const { data } = await supabase.from('site_resources').select('slug').eq('is_published', true)
+  return (data ?? []).map((r) => ({ params: { slug: r.slug } }))
+}
+
+const { slug } = Astro.params
+const resource = await getResourceBySlug(slug!)
+if (!resource) return Astro.redirect('/ressources')
+---
+<BaseLayout title={`${resource.title} — Divine Todo`} description={resource.description}>
+  <header class="top">
+    <div class="container">
+      <a class="brand" href="/"><span class="brand-mark">✦</span>Divine <b>Todo</b></a>
+      <a class="return" href="/ressources">← Toutes les ressources</a>
+    </div>
+  </header>
+  <main class="page">
+    <div class="container">
+      <header class="heading">
+        <p class="eyebrow">{resource.category} · Document {resource.file_type}</p>
+        <h1>{resource.title}</h1>
+        <p>{resource.description}</p>
+      </header>
+      <div class="doc">
+        <div class="preview">
+          <div class="sheet">
+            <p class="meta">✦ DIVINE TODO</p>
+            <h2>{resource.title}</h2>
+            <p>{resource.description}</p>
+          </div>
+        </div>
+        <aside class="side">
+          <span class="file-type">{resource.file_type}</span>
+          <h2>{resource.title}</h2>
+          <p>{resource.description}</p>
+          <dl>
+            <dt>Catégorie</dt><dd>{resource.category}</dd>
+            <dt>Format</dt><dd>{resource.file_type}{resource.file_size_label ? ` · ${resource.file_size_label}` : ''}</dd>
+          </dl>
+          <a class="button" href={resource.file_url} target="_blank" rel="noopener">Télécharger →</a>
+        </aside>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import { getAllPublications, formatDate } from '../../lib/content'
+
+const publications = await getAllPublications('meditation')
+---
+<BaseLayout title="Parole & Édification — Divine Todo" description="Méditations, réflexions et enseignements pour nourrir votre foi.">
+  <header class="top">
+    <div class="container">
+      <a class="brand" href="/"><span class="brand-mark">✦</span>Divine <b>Todo</b></a>
+      <a class="return" href="/#parole">← Retour à l'accueil</a>
+    </div>
+  </header>
+  <main class="page">
+    <div class="container">
+      <header class="heading">
+        <p class="eyebrow">Parole & Édification</p>
+        <h1>Nourrissez votre foi.</h1>
+        <p>Méditations, réflexions et enseignements pour votre quotidien spirituel.</p>
+      </header>
+      <div class="items article">
+        {publications.length === 0 ? (
+          <p style="text-align:center;color:var(--muted)">Aucune publication pour l'instant.</p>
+        ) : publications.map((p) => (
+          <article class="item">
+            <span class="file-type">✦</span>
+            <div><h2>{p.title}</h2><p>{p.category} · {formatDate(p.published_at)}</p></div>
+            <a class="button button-outline" href={`/parole/${p.slug}`}>Lire →</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </main>
+</BaseLayout>
