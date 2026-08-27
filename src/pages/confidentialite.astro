@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+<BaseLayout title="Politique de confidentialité — Divine Todo" description="Comment Divine Todo protège et utilise vos données personnelles.">
+  <header class="top">
+    <div class="container">
+      <a class="brand" href="/"><span class="brand-mark">✦</span>Divine <b>Todo</b></a>
+      <a class="return" href="/">← Retour à l'accueil</a>
+    </div>
+  </header>
+  <main class="page">
+    <div class="container article">
+      <header class="heading" style="text-align:left;margin-bottom:30px">
+        <p class="eyebrow">Informations légales</p>
+        <h1>Politique de confidentialité</h1>
+        <p>Dernière mise à jour : {new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+      </header>
+      <div class="copy">
+        <h2>1. Données collectées</h2>
+        <p>Lors de votre inscription à Divine Todo, nous collectons votre prénom, nom, adresse e-mail, numéro de téléphone et pseudonyme. Ces informations sont nécessaires au fonctionnement de l'application et à la validation de votre compte par un administrateur.</p>
+
+        <h2>2. Utilisation des données</h2>
+        <p>Vos données personnelles servent uniquement à assurer le fonctionnement de l'application : authentification, synchronisation de vos contenus (notes, journal, projets), et communication avec les autres utilisateurs si vous choisissez de partager du contenu. Elles ne sont jamais vendues ni transmises à des tiers à des fins commerciales.</p>
+
+        <h2>3. Stockage et sécurité</h2>
+        <p>Vos données sont hébergées via Supabase, avec des règles d'accès strictes garantissant que seul vous (et les administrateurs, dans le cadre de la modération) pouvez consulter vos informations personnelles.</p>
+
+        <h2>4. Vos droits</h2>
+        <p>Vous pouvez à tout moment demander la consultation, la correction ou la suppression de vos données personnelles en contactant l'administrateur de l'application.</p>
+
+        <h2>5. Cookies</h2>
+        <p>Le site vitrine Divine Todo n'utilise pas de cookies de suivi publicitaire. Seules les préférences d'affichage (thème clair/sombre) sont conservées localement dans votre navigateur.</p>
+
+        <h2>6. Contact</h2>
+        <p>Pour toute question relative à cette politique de confidentialité, contactez l'Institut Religieux Masculin Mère du Divin Amour.</p>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+<BaseLayout title="Conditions d'utilisation — Divine Todo" description="Les conditions d'utilisation de l'application et du site Divine Todo.">
+  <header class="top">
+    <div class="container">
+      <a class="brand" href="/"><span class="brand-mark">✦</span>Divine <b>Todo</b></a>
+      <a class="return" href="/">← Retour à l'accueil</a>
+    </div>
+  </header>
+  <main class="page">
+    <div class="container article">
+      <header class="heading" style="text-align:left;margin-bottom:30px">
+        <p class="eyebrow">Informations légales</p>
+        <h1>Conditions d'utilisation</h1>
+        <p>Dernière mise à jour : {new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+      </header>
+      <div class="copy">
+        <h2>1. Objet</h2>
+        <p>Divine Todo est une application de compagnonnage spirituel et d'organisation personnelle, développée par l'Institut Religieux Masculin Mère du Divin Amour. L'utilisation de l'application implique l'acceptation pleine et entière des présentes conditions.</p>
+
+        <h2>2. Inscription et approbation</h2>
+        <p>La création d'un compte est soumise à l'approbation d'un administrateur. Divine Todo se réserve le droit de refuser ou de suspendre l'accès à tout compte ne respectant pas l'esprit communautaire et spirituel de l'application.</p>
+
+        <h2>3. Contenu partagé</h2>
+        <p>Les utilisateurs restent responsables du contenu qu'ils créent et partagent (notes, projets, réflexions de Lectio Divina). Le partage de contenu inapproprié ou contraire à l'esprit de l'application peut entraîner la suspension du compte.</p>
+
+        <h2>4. Propriété intellectuelle</h2>
+        <p>Le produit à été concu par Les textes bibliques utilisés (traduction Crampon) sont dans le domaine public. Le calendrier liturgique est établi à partir de sources publiques de l'Église catholique. L'application elle-même, son code et son design, restent la propriété de l'Institut Religieux Masculin Mère du Divin Amour.</p>
+
+        <h2>5. Disponibilité du service</h2>
+        <p>Divine Todo fonctionne en mode hors-ligne pour l'essentiel de ses fonctionnalités. La synchronisation entre appareils nécessite une connexion internet. Nous nous efforçons d'assurer une disponibilité maximale mais ne pouvons garantir une continuité de service absolue.</p>
+
+        <h2>6. Modification des conditions</h2>
+        <p>Ces conditions peuvent évoluer. Toute modification substantielle sera communiquée aux utilisateurs.</p>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
