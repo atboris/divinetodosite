@@ -362,7 +362,7 @@ a {
   transform: scale(1);
 }
 .hero-content {
-  padding-top: 100px;
+  padding-top: 120px;
 }
 .kicker,
 .eyebrow {
@@ -1155,7 +1155,7 @@ footer p {
   }
 
   .hero-content {
-    padding-top: 100px;
+    padding-top: 120px;
   }
 
   .hero h1 {
