@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+<BaseLayout title="Contact — Divine Todo" description="Une question, une suggestion ? Écrivez-nous.">
+  <header class="top">
+    <div class="container">
+      <a class="brand" href="/"><span><img src="/divine_logo.png" alt="logo" class="brand-mark"></span>Divine <b>Todo</b></a>
+      <a class="return" href="/">← Retour à l'accueil</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="container">
+      <header class="heading">
+        <p class="eyebrow">Nous écrire</p>
+        <h1>Une question, une suggestion ?</h1>
+        <p>Nous serions heureux de vous lire. Répondez-nous à votre rythme, nous ferons de même.</p>
+      </header>
+
+      <form id="contact-form" class="contact-form" novalidate>
+        <div class="form-row">
+          <label for="name">Nom</label>
+          <input type="text" id="name" name="name" required minlength="2" maxlength="100" />
+        </div>
+        <div class="form-row">
+          <label for="email">Adresse e-mail</label>
+          <input type="email" id="email" name="email" required />
+        </div>
+        <div class="form-row">
+          <label for="subject">Sujet (facultatif)</label>
+          <input type="text" id="subject" name="subject" maxlength="150" />
+        </div>
+        <div class="form-row">
+          <label for="message">Votre message</label>
+          <textarea id="message" name="message" rows="6" required minlength="10" maxlength="3000"></textarea>
+        </div>
+
+        <!-- Champ piège : invisible et inaccessible pour un vrai visiteur,
+             mais souvent rempli automatiquement par les robots de spam -->
+        <div class="form-honeypot" aria-hidden="true">
+          <label for="website">Laissez ce champ vide</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <button type="submit" class="button" id="submit-button">Envoyer le message <span>→</span></button>
+        <p id="form-status" class="form-status" role="status"></p>
+      </form>
+    </div>
+  </main>
+</BaseLayout>
+
+<script define:vars={{ supabaseUrl: import.meta.env.PUBLIC_SUPABASE_URL, supabaseKey: import.meta.env.PUBLIC_SUPABASE_ANON_KEY }}>
+  const loadedAt = Date.now()
+  const form = document.getElementById('contact-form')
+  const statusEl = document.getElementById('form-status')
+  const submitBtn = document.getElementById('submit-button')
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    const data = new FormData(form)
+
+    // Un robot qui remplit ce champ invisible se trahit immédiatement
+    if (data.get('website')) {
+      statusEl.textContent = 'Une erreur est survenue.'
+      return
+    }
+    // Un humain met toujours plus de quelques secondes à remplir un formulaire
+    if (Date.now() - loadedAt < 3000) {
+      statusEl.textContent = 'Merci de patienter un instant avant d\'envoyer.'
+      return
+    }
+
+    submitBtn.disabled = true
+    statusEl.textContent = 'Envoi en cours...'
+
+    try {
+      const res = await fetch(`${supabaseUrl}/rest/v1/contact_messages`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+        },
+        body: JSON.stringify({
+          name: data.get('name'),
+          email: data.get('email'),
+          subject: data.get('subject') || null,
+          message: data.get('message'),
+        }),
+      })
+
+      if (!res.ok) throw new Error('Échec de l\'envoi')
+
+      form.reset()
+      statusEl.textContent = 'Merci ! Votre message a bien été envoyé.'
+      statusEl.classList.add('success')
+    } catch (err) {
+      statusEl.textContent = 'Une erreur est survenue. Merci de réessayer.'
+    } finally {
+      submitBtn.disabled = false
+    }
+  })
+</script>
