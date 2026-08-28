@@ -35,6 +35,43 @@
   transform: none;
 }
 
+.not-found {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #0b397e, #1877f2);
+  color: #fff;
+  text-align: center;
+}
+.not-found .eyebrow { color: #a7ceff; }
+.not-found h1 {
+  font: 700 clamp(90px, 15vw, 160px) var(--serif);
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -4px;
+}
+.not-found-text {
+  max-width: 480px;
+  margin: 20px auto 34px;
+  color: #dcecff;
+  font-size: 16px;
+}
+.not-found-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 22px;
+  margin-top: 44px;
+  padding-top: 30px;
+  border-top: 1px solid #ffffff28;
+}
+.not-found-links a {
+  font-size: 13px;
+  font-weight: 600;
+  color: #cfe2ff;
+}
+.not-found-links a:hover { color: #fff; }
+
 /* Couleurs liturgiques — même logique que dans l'application Divine Todo */
 .daily-card[data-color="Violet"] { background: linear-gradient(140deg, #7c3aed, #4c1d95); }
 .daily-card[data-color="Vert"] { background: linear-gradient(140deg, #16a34a, #14532d); }

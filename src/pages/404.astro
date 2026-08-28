@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+---
+<BaseLayout title="Page introuvable — Divine Todo" description="Cette page n'existe pas ou plus.">
+  <header class="top">
+    <div class="container">
+      <a class="brand" href="/"><span class="brand-mark">✦</span>Divine <b>Todo</b></a>
+      <a class="return" href="/">← Retour à l'accueil</a>
+    </div>
+  </header>
+
+  <main class="not-found">
+    <div class="container">
+      <p class="eyebrow">Égaré en chemin ?</p>
+      <h1>404</h1>
+      <p class="not-found-text">Cette page n'existe pas, ou a été déplacée. Même dans l'égarement, il y a toujours un chemin de retour.</p>
+
+      <a class="button button-light" href="/">Retour à l'accueil <span>→</span></a>
+
+      <nav class="not-found-links" aria-label="Sections principales du site">
+        <a href="/#eglise">Aujourd'hui dans l'Église</a>
+        <a href="/parole">Parole & Édification</a>
+        <a href="/actualites">Actualités</a>
+        <a href="/ressources">Ressources</a>
+        <a href="/#application">L'application</a>
+      </nav>
+    </div>
+  </main>
+</BaseLayout>
